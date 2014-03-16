@@ -1,6 +1,6 @@
 kfiltr
 ====
-PHP 5.5+ filtering pattern implementation
+PHP 5.5+ filtering pattern implementation 
 
 [![Build Status](https://travis-ci.org/jgswift/kfiltr.png?branch=master)](https://travis-ci.org/jgswift/kfiltr)
 
