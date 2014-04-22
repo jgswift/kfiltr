@@ -3,6 +3,7 @@ kfiltr
 PHP 5.5+ filtering pattern implementation 
 
 [![Build Status](https://travis-ci.org/jgswift/kfiltr.png?branch=master)](https://travis-ci.org/jgswift/kfiltr)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/jgswift/kfiltr/badges/quality-score.png?s=8f84c6df5bd73741f73c77f59924b100d91ebb17)](https://scrutinizer-ci.com/g/jgswift/kfiltr/)
 
 ## Installation
 
