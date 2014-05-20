@@ -1,5 +1,7 @@
 <?php
 namespace kfiltr\Factory {
+    use kfiltr;
+    
     trait Mapper {
         use kfiltr\Mapper;
 
@@ -11,17 +13,23 @@ namespace kfiltr\Factory {
             return Filter\Registry::setMapping($this, $mapping);
         }
 
-        function execute($input) {
+        function execute($input,$typeName) {
             $mapping = $this->getMapping();
             
             $inputMapping = null;
-            if(array_key_exists($input,$mapping)) {
-                $inputMapping = $mapping[$input];
+            if(isset($mapping[$typeName])) {
+                $inputMapping = $mapping[$typeName];
             }
-
+            
             if(is_string($inputMapping) && $this->hasFactory()) {
                 $factory = $this->getFactory();
-                return $factory->build($inputMapping);
+                $object = $factory->build($inputMapping);
+                
+                if(method_exists($this,'map')) {
+                    $object = $this->map($input, $object);
+                }
+                
+                return $object;
             }
 
             return null;

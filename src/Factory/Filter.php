@@ -1,6 +1,7 @@
 <?php
 namespace kfiltr\Factory {
-    use kfiltr, qtil;
+    use kfiltr;
+    use qtil;
     
     trait Filter {
         use qtil\Factory, kfiltr\Filter;
@@ -36,12 +37,11 @@ namespace kfiltr\Factory {
                 $inputMapping = $mapping[$typeName];
             }
 
-            $object = null;
             if(is_string($inputMapping)) {
                 $object = self::build($inputMapping);
                 
                 if(method_exists($this,'map')) {
-                    $input = $this->map($input, $object);
+                    $object = $this->map($input, $object);
                 } else {
                     $mappingFn = kfiltr\Mapper\Registry::getDefaultMapper();
                     

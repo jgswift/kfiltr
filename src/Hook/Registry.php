@@ -55,11 +55,11 @@ namespace kfiltr\Hook {
          * @param mixed $object
          * @param mixed $filter
          */
-        public static function removeFilter($object,$filter) {
-            $key = array_search($filter,self::$filters);
+        public static function removeFilter($object) {
+            $uid = self::identify($object);
             
-            if($key) {
-                unset(self::$filters[$key]);
+            if(isset(self::$filters[$uid])) {
+                unset(self::$filters[$uid]);
             }
         }
         

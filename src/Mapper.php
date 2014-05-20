@@ -1,5 +1,8 @@
 <?php
 namespace kfiltr {
+    /**
+     * @method map
+     */
     trait Mapper {
         use Filter;
         
@@ -25,8 +28,8 @@ namespace kfiltr {
          * Removes factory from registry
          * @param mixed $factory
          */
-        function unsetFactory($factory) {
-            Mapper\Registry::unsetFactory($this,$factory);
+        function unsetFactory() {
+            Mapper\Registry::unsetFactory($this);
         }
 
         /**
@@ -54,7 +57,7 @@ namespace kfiltr {
                 $factory = $this->getFactory();
                 $object = $factory::build($typeClass);
                 if(method_exists($this,'map')) {
-                    $input = $this->map($input, $object);
+                    $object = $this->map($input, $object);
                 } else {
                     $mappingFn = Mapper\Registry::getDefaultMapper();
                     

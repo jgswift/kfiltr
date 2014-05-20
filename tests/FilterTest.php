@@ -42,9 +42,7 @@ namespace kfiltr\Tests {
             
             $value = $fooMapper([],'kfiltr\Tests\Mock\FooFilter');
                         
-            $isFilter = $value instanceof Mock\FooFilter;
-            
-            $this->assertEquals(true,$isFilter);
+            $this->assertInstanceOf('kfiltr\Tests\Mock\FooFilter', $value);
         }
         
         function testFactoryFilterInvoke() {
@@ -58,9 +56,22 @@ namespace kfiltr\Tests {
             
             $value = $fooMapper([],'filter');
             
-            $isFilter = $value instanceof Mock\FooFilter;
+            $this->assertInstanceOf('kfiltr\Tests\Mock\FooFilter', $value);
+        }
+        
+        function testFactoryMapperInvoke() {
+            $fooMapper = new Mock\FooFactoryMapper();
             
-            $this->assertEquals(true,$isFilter);
+            $mapping = new kfiltr\Filter\Mapping([
+                'filter' => 'kfiltr\Tests\Mock\FooFilter'
+            ]);
+            
+            $fooMapper->setFactory(new Mock\FooFactory());
+            $fooMapper->setMapping($mapping);
+            
+            $value = $fooMapper([],'filter');
+            
+            $this->assertInstanceOf('kfiltr\Tests\Mock\FooFilter', $value);
         }
     }
 }

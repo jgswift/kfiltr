@@ -37,11 +37,11 @@ namespace kfiltr\Filter {
          * @param mixed $object
          * @param callable $delegate
          */
-        public static function unsetDelegate($object,callable $delegate) {
-            $key = array_search($delegate,self::$delegates);
+        public static function unsetDelegate($object) {
+            $uid = self::identify($object);
             
-            if($key) {
-                unset(self::$delegates[$key]);
+            if(isset(self::$delegates[$uid])) {
+                unset(self::$delegates[$uid]);
             }
         }
         

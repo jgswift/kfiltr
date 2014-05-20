@@ -31,8 +31,8 @@ namespace kfiltr {
          * Helper function to remove delegate from filter
          * @param callable $delegate
          */
-        function unsetDelegate(callable $delegate) {
-            Filter\Registry::unsetDelegate($this, $delegate);
+        function unsetDelegate() {
+            Filter\Registry::unsetDelegate($this);
         }
 
         /**
