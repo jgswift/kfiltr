@@ -62,12 +62,10 @@ namespace kfiltr\Tests {
         function testFactoryMapperInvoke() {
             $fooMapper = new Mock\FooFactoryMapper();
             
-            $mapping = new kfiltr\Filter\Mapping([
+            $fooMapper->setFactory(new Mock\FooFactory());
+            $fooMapper->setMapping([
                 'filter' => 'kfiltr\Tests\Mock\FooFilter'
             ]);
-            
-            $fooMapper->setFactory(new Mock\FooFactory());
-            $fooMapper->setMapping($mapping);
             
             $value = $fooMapper([],'filter');
             

@@ -16,10 +16,18 @@ namespace kfiltr\Factory {
 
         /**
          * Sets mapping for factory filter
-         * @param kfiltr\Filter\Mapping $mapping
+         * @param array|kfiltr\Filter\Mapping $mapping
          * @return kfiltr\Filter\Mapping
          */
-        function setMapping(kfiltr\Filter\Mapping $mapping) {
+        function setMapping($mapping) {
+            if(is_array($mapping)) {
+                $mapping = new kfiltr\Filter\Mapping($mapping);
+            }
+            
+            if(!($mapping instanceof kfiltr\Filter\Mapping)) {
+                throw new \InvalidArgumentException;
+            }
+            
             return Filter\Registry::setMapping($this, $mapping);
         }
 
