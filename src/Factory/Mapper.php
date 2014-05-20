@@ -2,6 +2,9 @@
 namespace kfiltr\Factory {
     use kfiltr;
     
+    /**
+     * @method map
+     */
     trait Mapper {
         use kfiltr\Mapper;
 

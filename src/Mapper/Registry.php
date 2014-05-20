@@ -37,7 +37,7 @@ namespace kfiltr\Mapper {
          * @param mixed $object
          * @param mixed $factory
          */
-        public static function unsetFactory($objects) {
+        public static function unsetFactory($object) {
             $uid = self::identify($object);
             
             if(isset(self::$factories[$uid])) {
