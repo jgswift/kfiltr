@@ -20,6 +20,7 @@ namespace kfiltr\Filter {
         function __construct() {
             $args = func_get_args();
             
+            $data = [];
             if(func_num_args()) {
                 foreach($args as $a) {
                     if(qtil\ArrayUtil::isIterable($a)) {
