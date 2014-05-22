@@ -19,6 +19,7 @@ namespace kfiltr\Factory {
         /**
          * Sets mapping for factory mapper
          * @param array|kfiltr\Filter\Mapping $mapping
+         * @param callable $namingCallback
          * @return kfiltr\Filter\Mapping
          */
         function setMapping($mapping,callable $namingCallback = null) {

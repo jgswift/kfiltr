@@ -15,17 +15,23 @@ namespace kfiltr\Factory {
         }
 
         /**
-         * Sets mapping for factory filter
+         * Sets mapping for factory mapper
          * @param array|kfiltr\Filter\Mapping $mapping
+         * @param callable $namingCallback
          * @return kfiltr\Filter\Mapping
          */
-        function setMapping($mapping) {
+        function setMapping($mapping,callable $namingCallback = null) {
             if(is_array($mapping)) {
-                $mapping = new kfiltr\Filter\Mapping($mapping);
+                $mapping = new kfiltr\Filter\Mapping($mapping,$namingCallback);
+                $namingCallback = null;
             }
             
             if(!($mapping instanceof kfiltr\Filter\Mapping)) {
                 throw new \InvalidArgumentException;
+            }
+            
+            if(is_callable($namingCallback)) {
+                $mapping->setNamingCallback($namingCallback);
             }
             
             return Filter\Registry::setMapping($this, $mapping);
