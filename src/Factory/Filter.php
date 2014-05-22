@@ -51,10 +51,6 @@ namespace kfiltr\Factory {
                 $typeName = $callback($input);
             }
             
-            if(!is_string($typeName)) {
-                throw new \InvalidArgumentException;
-            }
-            
             $inputMapping = null;
             
             if($mapping->exists($typeName)) {
