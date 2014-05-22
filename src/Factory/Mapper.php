@@ -21,13 +21,18 @@ namespace kfiltr\Factory {
          * @param array|kfiltr\Filter\Mapping $mapping
          * @return kfiltr\Filter\Mapping
          */
-        function setMapping($mapping) {
+        function setMapping($mapping,callable $namingCallback = null) {
             if(is_array($mapping)) {
-                $mapping = new kfiltr\Filter\Mapping($mapping);
+                $mapping = new kfiltr\Filter\Mapping($mapping,$namingCallback);
+                $namingCallback = null;
             }
             
             if(!($mapping instanceof kfiltr\Filter\Mapping)) {
                 throw new \InvalidArgumentException;
+            }
+            
+            if(is_callable($namingCallback)) {
+                $mapping->setNamingCallback($namingCallback);
             }
             
             return Filter\Registry::setMapping($this, $mapping);
@@ -39,11 +44,21 @@ namespace kfiltr\Factory {
          * @param string $typeName
          * @return mixed|null
          */
-        function execute($input,$typeName) {
+        function execute($input,$typeName = null) {
             $mapping = $this->getMapping();
             
+            if(is_null($typeName)) {
+                $callback = $mapping->getNamingCallback();
+                $typeName = $callback($input);
+            }
+            
+            if(!is_string($typeName)) {
+                throw new \InvalidArgumentException;
+            }
+            
             $inputMapping = null;
-            if(isset($mapping[$typeName])) {
+            
+            if($mapping->exists($typeName)) {
                 $inputMapping = $mapping[$typeName];
             }
             
@@ -53,6 +68,10 @@ namespace kfiltr\Factory {
                 
                 if(method_exists($this,'map')) {
                     $object = $this->map($input, $object);
+                } else {
+                    $mappingFn = kfiltr\Mapper\Registry::getDefaultMapper();
+                    
+                    $object = $mappingFn($input,$object);
                 }
                 
                 return $object;

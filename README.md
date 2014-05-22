@@ -14,7 +14,12 @@ php composer.phar require jgswift/kfiltr:dev-master
 
 ## Usage
 
-Kfiltr provides a set of traits and interfaces which implement general filtering and mapping patterns
+Kfiltr is a generic component that implements several traits for filtering, mapping, and hooking.
+Kfiltr provides several interfaces which broadly describe the intended implementation criteria.
+Kfiltr does not impose on your domain model and is meant to assist in the development of more specific components
+that frequently rely on similar functionality.
+
+### Filters
 
 A minimal Filter example
 ```php
@@ -32,7 +37,7 @@ $filter = new MyFilter();
 var_dump($filter('foo')); // returns 'foo'
 ```
 
-Any filter can easily be interceded by a custom closure.
+Any filter can easily be bypassed by a custom closure.
 
 ```php
 <?php
@@ -44,7 +49,9 @@ $filter->setDelegate(function() {
 var_dump($filter('foo')); // returns 'bar'
 ```
 
-Similar to the Filter above, the Mapping pattern implementation is used specifically for building objects through qtil\Factory
+### Mappers
+
+Similar to the Filter approach above, the Mapping approach is used specifically for populating already instantiated objects with input data
 
 ```php
 <?php
@@ -60,7 +67,7 @@ class MyMapper {
         $this->setFactory($factory);
     }
 
-    // do stuff to map object here. if this method isn't provided, a default mapping procedure is used
+    // do stuff to map object here.
     function map($input,$object) {
         return $object;
     }
@@ -76,6 +83,11 @@ $object = $mapper([],'MyMiscClass');
 
 var_dump($object); // returns blank MyMiscClass object
 ```
+
+If no ```map``` method is provided then a default mapping callback will be used.
+The default mapping callback assumes that input is an array and object is an object respectively.
+
+###Hooks
 
 To facilitate the usage of filters and mappers, a standard hook implementation is provided
 
@@ -117,4 +129,5 @@ $hook->addFilter($filter);
 var_dump($hook('foo')); // returns [ 0 => 'foo' ]
 ```
 
-Note: there are a couple of other filter and mapping implementations provided, please consult unit tests for implementation details
+### Factory Filter/Mapper
+Additionally two factories are provided that take advantage of the filter and mapper abstractions outlined above.  No examples available yet, please consult unit tests for implementation details.

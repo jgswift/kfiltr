@@ -37,26 +37,26 @@ namespace kfiltr\Factory {
          * @param string $typeName
          * @return mixed
          */
-        function execute($input,$typeName) {
-            $mapping = $this->getMapping()->toArray();
+        function execute($input,$typeName = null) {
+            $mapping = $this->getMapping();
+            
+            if(is_null($typeName)) {
+                $callback = $mapping->getNamingCallback();
+                $typeName = $callback($input);
+            }
+            
+            if(!is_string($typeName)) {
+                throw new \InvalidArgumentException;
+            }
             
             $inputMapping = null;
-            if(array_key_exists($typeName,$mapping)) {
+            
+            if($mapping->exists($typeName)) {
                 $inputMapping = $mapping[$typeName];
             }
 
             if(is_string($inputMapping)) {
-                $object = self::build($inputMapping);
-                
-                if(method_exists($this,'map')) {
-                    $object = $this->map($input, $object);
-                } else {
-                    $mappingFn = kfiltr\Mapper\Registry::getDefaultMapper();
-                    
-                    $object = $mappingFn($input,$object);
-                }
-                
-                return $object;
+                return self::build($inputMapping);
             }
 
             return $input;
