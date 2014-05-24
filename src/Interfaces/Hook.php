@@ -22,7 +22,7 @@ namespace kfiltr\Interfaces {
          * Removes filter from hook
          * @param mixed $filter
          */
-        function removeFilter();
+        function removeFilter($filter);
         
         /**
          * Clears all filters from hook

@@ -33,8 +33,8 @@ namespace kfiltr {
          * Removes hooked filter
          * @param \callable $filter
          */
-        function removeFilter() {
-            Hook\Registry::removeFilter($this);
+        function removeFilter($filter) {
+            Hook\Registry::removeFilter($this, $filter);
         }
 
         /**
