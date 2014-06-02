@@ -89,7 +89,10 @@ The default mapping callback assumes that input is an array and object is an obj
 
 ###Hooks
 
-To facilitate the usage of filters and mappers, a standard hook implementation is provided
+To assist filter processing, a standard hook implementation is provided.
+Hooks are containers for multiple filters that typically run sequentially.
+Hooks may also be filters, but are not by default.  In the example below, 
+the hook will iterate over and perform all contained filtering operations. 
 
 ```php
 <?php
