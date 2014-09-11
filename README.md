@@ -4,6 +4,9 @@ PHP 5.5+ filtering pattern implementation
 
 [![Build Status](https://travis-ci.org/jgswift/kfiltr.png?branch=master)](https://travis-ci.org/jgswift/kfiltr)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/jgswift/kfiltr/badges/quality-score.png?s=8f84c6df5bd73741f73c77f59924b100d91ebb17)](https://scrutinizer-ci.com/g/jgswift/kfiltr/)
+[![Latest Stable Version](https://poser.pugx.org/jgswift/kfiltr/v/stable.svg)](https://packagist.org/packages/jgswift/kfiltr)
+[![License](https://poser.pugx.org/jgswift/kfiltr/license.svg)](https://packagist.org/packages/jgswift/kfiltr)
+[![Coverage Status](https://coveralls.io/repos/jgswift/kfiltr/badge.png?branch=master)](https://coveralls.io/r/jgswift/kfiltr?branch=master)
 
 ## Installation
 
@@ -34,7 +37,7 @@ Interfaces are also provided to broadly describe the intended implementation, ho
 
 ### Filters
 
-A minimal Filter example
+A minimal Filter example.  The execute method does not enforce any particular signature and may define whatever arguments needed
 ```php
 <?php
 class MyFilter implements kfiltr\Interfaces\Filter {
@@ -50,7 +53,9 @@ $filter = new MyFilter();
 var_dump($filter('foo')); // returns 'foo'
 ```
 
-Any filter can easily be bypassed by a custom closure.
+#### Delegate
+
+Effectively a filter is the same except that filters can be bypassed by a custom callable.
 
 ```php
 <?php
@@ -65,6 +70,7 @@ var_dump($filter('foo')); // returns 'bar'
 ### Mappers
 
 Similar to the Filter approach above, the Mapping approach is used specifically for populating already instantiated objects with input data
+Using a mapper requires [jgswift/qtil](http://github.com/jgswift/qtil)
 
 ```php
 <?php
@@ -100,7 +106,7 @@ var_dump($object); // returns blank MyMiscClass object
 If no ```map``` method is provided then a default mapping callback will be used.
 The default mapping callback assumes that input is an array and object is an object respectively.
 
-###Hooks
+### Hooks
 
 To assist filter processing, a standard hook implementation is provided.
 Hooks are containers for multiple filters that typically run sequentially.
@@ -189,7 +195,7 @@ var_dump(get_class($human));    // Creatures\Human
 This filter makes object using a factory and maps the properties using kfiltr\Mapper.
 Arguments are mapped and the constructor must be empty for mapped classes.
 To map objects with non-empty constructors, a custom factory is required.
-Using this mapper also requires [jgswift/qtil](http://github.com/jgswift/qtil)
+Using this filter requires [jgswift/qtil](http://github.com/jgswift/qtil)
 
 ```php
 namespace Creatures {
