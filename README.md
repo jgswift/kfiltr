@@ -7,17 +7,30 @@ PHP 5.5+ filtering pattern implementation
 
 ## Installation
 
-Install via [composer](https://getcomposer.org/):
+Install via cli using [composer](https://getcomposer.org/):
 ```sh
-php composer.phar require jgswift/kfiltr:dev-master
+php composer.phar require jgswift/kfiltr:0.1.*
 ```
 
-## Usage
+Install via composer.json using [composer](https://getcomposer.org/):
+```json
+{
+    "require": {
+        "jgswift/kfiltr": "0.1.*"
+    }
+}
+```
 
-Kfiltr is a generic component that implements several traits for filtering, mapping, and hooking.
-Kfiltr provides several interfaces which broadly describe the intended implementation criteria.
-Kfiltr does not impose on your domain model and is meant to assist in the development of more specific components
-that frequently rely on similar functionality.
+## Description
+
+Kfiltr provides a set of generic traits that handle filtering, mapping, and hooking in a domain-agnostic way.  
+Interfaces are also provided to broadly describe the intended implementation, however they are required to use this package.
+
+## Dependency
+
+* php 5.5+
+
+## Usage
 
 ### Filters
 
@@ -133,4 +146,84 @@ var_dump($hook('foo')); // returns [ 0 => 'foo' ]
 ```
 
 ### Factory Filter/Mapper
-Additionally two factories are provided that take advantage of the filter and mapper abstractions outlined above.  No examples available yet, please consult unit tests for implementation details.
+
+#### Filter
+
+Using this filter requires [jgswift/qtil](http://github.com/jgswift/qtil)
+
+Factory filters make objects using a class map.  Arguments are passed to the constructor
+
+```php
+namespace Creatures {
+    class Animal { 
+        function __construct($species) { /* ... */ }
+    }
+
+    class Human extends Animal {
+        function __construct($ethnicity) { /* ... */ }
+    }
+}
+
+class MyFilter {
+    use kfiltr\Factory\Filter;
+}
+
+// specific class names keyed by an id
+$mapping = [
+    'animal' => 'Creatures\Animal',
+    'human' => 'Creatures\Human'
+];
+
+$filter = new MyFilter(); // create filter
+$filter->setMapping($mapping); // apply mapping
+
+$animal = $filter(['cat'],'animal'); // create animal
+$human = $filter(['polish'],'human');// create human
+
+var_dump(get_class($animal));   // Creatures\Animal
+var_dump(get_class($human));    // Creatures\Human
+```
+
+#### Mapper
+
+This filter makes object using a factory and maps the properties using kfiltr\Mapper.
+Arguments are mapped and the constructor must be empty for mapped classes.
+To map objects with non-empty constructors, a custom factory is required.
+Using this mapper also requires [jgswift/qtil](http://github.com/jgswift/qtil)
+
+```php
+namespace Creatures {
+    class Animal { 
+        function __construct($species) { /* ... */ }
+    }
+
+    class Human extends Animal {
+        function __construct($ethnicity) { /* ... */ }
+    }
+}
+
+class MyFactory {
+    use qtil\Factory;
+}
+
+class MyMapper {
+    use kfiltr\Factory\Mapper;
+}
+
+$mapping = [
+    'animal' => 'Creatures\Animal',
+    'human' => 'Creatures\Human'
+];
+
+$mapper = new MyMapper();
+$mapper->setFactory(new MyFactory);
+$mapper->setMapping($mapping);
+
+$caucasian = $mapper(['ethnicity'=>'caucasian'],'human');
+$indian = $mapper(['ethnicity'=>'indian'],'human');
+$elephant = $mapper(['species'=>'elephant'],'animal');
+
+var_dump($caucasian->ethnicity);
+var_dump($indian->ethnicity);
+var_dump($elephant->species);
+```
